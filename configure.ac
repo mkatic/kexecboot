@@ -2,7 +2,7 @@ AC_PREREQ(2.53)
 AC_INIT([kexecboot], [0.5.9], [kexecboot-devel@linuxtogo.org])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([-Wall foreign])
-AC_CONFIG_SRCDIR(kexecboot.c)
+AC_CONFIG_SRCDIR(src/kexecboot.c)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
@@ -240,4 +240,5 @@ AC_SUBST(GCC_FLAGS)
 
 AC_OUTPUT([
 Makefile
+src/Makefile
 ])
