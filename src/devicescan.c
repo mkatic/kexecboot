@@ -77,6 +77,7 @@ struct bootconf_t *create_bootcfg(unsigned int size)
 	bc->fill = 0;
 
 	bc->timeout = 0;
+	bc->autoboot = -1;
 	bc->default_item = NULL;
 	bc->ui = GUI;
 	bc->debug = 0;
@@ -138,7 +139,7 @@ int addto_bootcfg(struct bootconf_t *bc, struct device_t *dev,
 		bi->icondata = sc->icondata;
 		bi->priority = sc->priority;
 		if (sc->is_default) bc->default_item = bi;
-
+				
 		bc->list[bc->fill] = bi;
 
 		if (cfgdata->ui != bc->ui)	bc->ui = cfgdata->ui;
@@ -146,6 +147,10 @@ int addto_bootcfg(struct bootconf_t *bc, struct device_t *dev,
 		if (cfgdata->debug > 0)		bc->debug = cfgdata->debug;
 
 		++bc->fill;
+		
+		if ((bc->autoboot == -1) && (sc->autoboot))
+			bc->autoboot = bc->fill;
+
 
 		/* Resize list when needed */
 		if (bc->fill >= bc->size) {

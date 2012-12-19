@@ -402,3 +402,22 @@ enum actions_t inputs_process(kx_inputs *inputs)
 
 	return action;
 }
+
+int key_is_pressed (kx_inputs *inputs) {
+    
+	char key_bitfield[KEY_CNT/8];
+	int i, j;
+	
+	for (i = 0; i < inputs->count; i++)		
+		if (inputs->fdtypes[i] == KX_IT_EVDEV) {		
+			memset(key_bitfield, 0, sizeof(key_bitfield));
+    		ioctl(inputs->fds[i], EVIOCGKEY(sizeof(key_bitfield)), key_bitfield);
+			
+			for (j = 0; j < sizeof(key_bitfield); j++)
+				if (key_bitfield[j] & 0xff)
+					return 1;		
+		}
+	
+	return 0;
+}
+

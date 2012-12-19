@@ -35,6 +35,7 @@ typedef struct {
 	char *iconpath;		/* Custom partition icon path */
 	void *icondata;		/* Icon data */
 	int is_default;		/* Use section as default? */
+	int autoboot;		/* Boot this section ASAP */
 	int priority;		/* Priority of item in menu */
 } kx_cfg_section;
 

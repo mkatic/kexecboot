@@ -89,5 +89,7 @@ int inputs_preprocess(kx_inputs *inputs);
 /* Read and process events */
 enum actions_t inputs_process(kx_inputs *inputs);
 
+/* Check if any key is pressed */
+int key_is_pressed (kx_inputs *inputs);
 
 #endif //_HAVE_EVDEVS_H_

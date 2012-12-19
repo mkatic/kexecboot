@@ -53,6 +53,7 @@ struct boot_item_t {
 /* Boot configuration structure */
 struct bootconf_t {
 	int timeout;				/* Seconds before default item autobooting (0 - disabled) */
+	int autoboot;			
 	struct boot_item_t *default_item;	/* Default menu item (NULL - none) */
 	enum ui_type_t ui;			/* UI (graphics/text) */
 	int debug;					/* Use debugging */

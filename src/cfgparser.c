@@ -64,7 +64,7 @@ kx_cfg_section *cfg_section_new(struct cfgdata_t *cfgdata)
 	sc->icondata = NULL;
 	sc->priority = 0;
 	sc->is_default = 0;
-
+	sc->autoboot = 0;
 	cfgdata->list[cfgdata->count++] = sc;
 	cfgdata->current = sc;
 
@@ -226,6 +226,19 @@ static int set_default(struct cfgdata_t *cfgdata, char *value)
 	return 0;
 }
 
+static int set_autoboot(struct cfgdata_t *cfgdata, char *value) {
+
+	kx_cfg_section *sc;
+
+	sc = cfgdata->current;
+	if (!sc) return -1;
+
+	sc->autoboot = 1;
+
+	return 0;
+
+}
+
 static int set_timeout(struct cfgdata_t *cfgdata, char *value)
 {
 	cfgdata->timeout = get_nni(value, NULL);
@@ -373,6 +386,7 @@ static struct cfg_keyfunc_t cfg_keyfunc[] = {
 	{ CFG_FILE,-1, "DEBUG", set_debug },
 	/* Individual item settings */
 	{ CFG_FILE, 0, "DEFAULT", set_default },
+	{ CFG_FILE, 0, "AUTOBOOT", set_autoboot },
 	{ CFG_FILE, 1, "LABEL", set_label },
 	{ CFG_FILE, 1, "KERNEL", set_kernel },
 	{ CFG_FILE, 1, "ICON", set_icon },

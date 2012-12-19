@@ -1016,6 +1016,7 @@ int do_main_loop(struct params_t *params, kx_inputs *inputs)
 int main(int argc, char **argv)
 {
 	int rc = 0;
+	int list_item_nr = 0;
 	struct cfgdata_t cfg;
 	struct params_t params;
 	kx_inputs inputs;
@@ -1077,7 +1078,7 @@ int main(int argc, char **argv)
 	params.menu = build_menu(&params);
 	params.bootcfg = NULL;
 	scan_devices(&params);
-
+	
 	if (-1 == fill_menu(&params)) {
 		exit(-1);
 	}
@@ -1087,10 +1088,17 @@ int main(int argc, char **argv)
 	inputs_open(&inputs);
 	inputs_preprocess(&inputs);
 
+	if ((params.bootcfg->autoboot != -1) && (!key_is_pressed(&inputs))) {
+			list_item_nr = (params.bootcfg->autoboot - 1);
+		}
+	else {
 	/* Run main event loop
 	 * Return values: <0 - error, >=0 - selected item id */
 	rc = do_main_loop(&params, &inputs);
-
+	
+	if (rc >= A_DEVICES)
+		list_item_nr = rc - A_DEVICES;
+	}
 #ifdef USE_FBMENU
 	if (params.gui) {
 		if (rc < 0) gui_clear(params.gui);
@@ -1113,10 +1121,7 @@ int main(int argc, char **argv)
 	if (rc < 0) exit(rc);
 
 	menu_destroy(params.menu, 0);
-
-	if (rc >= A_DEVICES) {
-		start_kernel(&params, rc - A_DEVICES);
-	}
+	start_kernel(&params, list_item_nr);
 
 	/* When we reach this point then some error has occured */
 	DPRINTF("We should not reach this point!");
